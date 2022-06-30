@@ -4,6 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "seahash"
+description = "A blazingly fast, portable hash function with proven statistical guarantees"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
 readme = "README.md"
