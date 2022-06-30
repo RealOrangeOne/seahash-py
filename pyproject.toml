@@ -25,8 +25,8 @@ keywords = ["hash", "hashing", "checksum", "checksumming", "portable"]
 
 [project.urls]
 Source = "https://github.com/RealOrangeOne/seahash-py"
-Changelog = "https://github.com/RealOrangeOne/seafile-py/releases"
-Issues = "https://github.com/RealOrangeOne/seafile-py/issues"
+Changelog = "https://github.com/RealOrangeOne/seahash-py/releases"
+Issues = "https://github.com/RealOrangeOne/seahash-py/issues"
 
 [project.optional-dependencies]
 dev = [
