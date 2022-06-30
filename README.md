@@ -16,6 +16,8 @@ Python bindings to [`seahash`](https://docs.rs/seahash/) - A blazingly fast, por
 pip install seahash
 ```
 
+Wheels should be available for most platforms. If you need a wheel which isn't provided, [raise an issue](https://github.com/RealOrangeOne/seahash-py/issues).
+
 Compiling from source will require a Rust toolchain.
 
 ## Usage
