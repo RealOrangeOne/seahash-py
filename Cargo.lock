@@ -171,7 +171,7 @@ checksum = "1c107b6f4780854c8b126e228ea8869f4d7b71260f962fefb57b996b8959ba6b"
 
 [[package]]
 name = "seahash-py"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "pyo3",
  "seahash",
