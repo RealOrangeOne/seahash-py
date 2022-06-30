@@ -20,7 +20,9 @@ Compiling from source will require a Rust toolchain.
 
 ## Usage
 
-Currently, only the 2 primitive methods are available:
+Hashing can be done in 2 ways:
+
+### Primitive functions
 
 ```python
 import seahash
@@ -33,3 +35,20 @@ seahash.hash_seeded(b"123", 4, 5, 6, 7)
 ```
 
 Both methods return an `int`.
+
+### `hashlib`-compatible class
+
+For convenience, a `hashlib`-compatible class is provided:
+
+```python
+import seahash
+
+s = seahash.SeaHash()
+
+s.update(b"123")
+
+s.digest()
+s.hexdigest()
+```
+
+The underlying `int` digest can be obtained with `intdigest`.
