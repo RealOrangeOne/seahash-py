@@ -18,7 +18,9 @@ classifiers = [
 keywords = ["hash", "hashing", "checksum", "checksumming", "portable"]
 
 [project.urls]
-homepage = "https://github.com/RealOrangeOne/seahash-py"
+Source = "https://github.com/RealOrangeOne/seahash-py"
+Changelog = "https://github.com/RealOrangeOne/seafile-py/releases"
+Issues = "https://github.com/RealOrangeOne/seafile-py/issues"
 
 [project.optional-dependencies]
 dev = [
