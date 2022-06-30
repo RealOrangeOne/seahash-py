@@ -9,3 +9,27 @@
 
 
 Python bindings to [`seahash`](https://docs.rs/seahash/) - A blazingly fast, portable hash function with proven statistical guarantees.
+
+## Installation
+
+```
+pip install seahash
+```
+
+Compiling from source will require a Rust toolchain.
+
+## Usage
+
+Currently, only the 2 primitive methods are available:
+
+```python
+import seahash
+
+# Plain hash
+seahash.hash(b"123")
+
+# Hash with custom seeds
+seahash.hash_seeded(b"123", 4, 5, 6, 7)
+```
+
+Both methods return an `int`.
