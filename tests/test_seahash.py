@@ -30,3 +30,8 @@ def test_hashlib_compatible():
 
 def test_initial_state():
     assert seahash.SeaHash(b"123").intdigest() == seahash.hash(b"123")
+
+
+def test_digest_size():
+    s = seahash.SeaHash(b"123")
+    assert len(s.digest()) == s.digest_size

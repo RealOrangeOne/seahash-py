@@ -22,11 +22,11 @@ struct SeaHash {
 impl SeaHash {
     #[pyo3(name = "digest_size")]
     #[classattr]
-    const DIGEST_SIZE: u8 = 64;
+    const DIGEST_SIZE: u8 = 8;
 
     #[pyo3(name = "block_size")]
     #[classattr]
-    const BLOCK_SIZE: u8 = 64;
+    const BLOCK_SIZE: u8 = 8;
 
     #[new]
     #[args(string = "Vec::new()")]
