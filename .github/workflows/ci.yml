@@ -16,13 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
+        id: python
         with:
           python-version: ${{ matrix.python }}
       - uses: messense/maturin-action@v1
         with:
           command: build
-          args: --release --no-sdist -o dist
+          args: --release --no-sdist -o dist --interpreter=${{ steps.python.outputs.python-path }}
       - name: Install built package
         run: pip install seahash --no-index --find-links dist --force-reinstall
       - name: Install dev dependencies
