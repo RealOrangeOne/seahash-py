@@ -5,11 +5,20 @@ build-backend = "maturin"
 [project]
 name = "seahash"
 requires-python = ">=3.7"
+license = {file = "LICENSE"}
+readme = "README.md"
 classifiers = [
     "Programming Language :: Rust",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "Development Status :: 4 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Typing :: Typed"
 ]
+keywords = ["hash", "hashing", "checksum", "checksumming", "portable"]
+
+[project.urls]
+homepage = "https://github.com/RealOrangeOne/seahash-py"
 
 [project.optional-dependencies]
 dev = [
