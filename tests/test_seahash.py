@@ -1,5 +1,7 @@
-import seahash
 import pkg_resources
+import sys
+
+import seahash
 
 
 def test_hash():
@@ -12,3 +14,19 @@ def test_hash_seeded():
 
 def test_version():
     assert seahash.__version__ == pkg_resources.get_distribution("seahash").version
+
+
+def test_hashlib_compatible():
+    s = seahash.SeaHash()
+    s.update(b"123")
+    assert s.intdigest() == seahash.hash(b"123")
+    assert s.digest() == b"\x9d\n`)\xbb\x94%\xf8"
+    assert s.hexdigest() == "f82594bb29600a9d"
+    s.update(b"456")
+    assert s.intdigest() == seahash.hash(b"123456")
+    assert s.digest() == b"0|l\x17P\xeb+R"
+    assert s.intdigest() == int.from_bytes(s.digest(), sys.byteorder)
+
+
+def test_initial_state():
+    assert seahash.SeaHash(b"123").intdigest() == seahash.hash(b"123")
