@@ -3,14 +3,14 @@ use pyo3::types::PyBytes;
 
 /// Hash some bytes
 #[pyfunction]
-fn hash(buf: &[u8]) -> PyResult<u64> {
-    Ok(seahash::hash(buf))
+fn hash(py: Python, buf: &[u8]) -> u64 {
+    py.allow_threads(|| seahash::hash(buf))
 }
 
 /// Hash some bytes according to a chosen seed.
 #[pyfunction]
-fn hash_seeded(buf: &[u8], a: u64, b: u64, c: u64, d: u64) -> PyResult<u64> {
-    Ok(seahash::hash_seeded(buf, a, b, c, d))
+fn hash_seeded(py: Python, buf: &[u8], a: u64, b: u64, c: u64, d: u64) -> u64 {
+    py.allow_threads(|| seahash::hash_seeded(buf, a, b, c, d))
 }
 
 #[pyclass]
@@ -39,15 +39,15 @@ impl SeaHash {
     }
 
     pub fn digest(&self, py: Python) -> PyObject {
-        PyBytes::new(py, &self.intdigest().to_ne_bytes()).into()
+        PyBytes::new(py, &self.intdigest(py).to_ne_bytes()).into()
     }
 
-    pub fn intdigest(&self) -> u64 {
-        seahash::hash(&self.inner)
+    pub fn intdigest(&self, py: Python) -> u64 {
+        hash(py, &self.inner)
     }
 
-    pub fn hexdigest(&self) -> String {
-        format!("{:x}", self.intdigest())
+    pub fn hexdigest(&self, py: Python) -> String {
+        format!("{:x}", self.intdigest(py))
     }
 
     pub fn copy(&self) -> Self {
