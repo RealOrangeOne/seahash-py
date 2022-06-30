@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.7", "3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: messense/maturin-action@v1
+        with:
+          command: build
+          args: --release --no-sdist -o dist
+      - name: Install built package
+        run: pip install seahash --no-index --find-links dist --force-reinstall
+      - name: Install dev dependencies
+        run: pip install '.[dev]'
+      - name: Run tests
+        run: pytest --verbose
