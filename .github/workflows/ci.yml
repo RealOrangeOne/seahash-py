@@ -24,6 +24,7 @@ jobs:
           command: build
           args: --release --no-sdist -o dist --interpreter 3.7 3.8 3.9 3.10
           target: ${{ matrix.target }}
+          manylinux: auto
       - name: Install built package
         run: pip install seahash --no-index --find-links dist --force-reinstall
       - name: Install dev dependencies
