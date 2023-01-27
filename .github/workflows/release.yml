@@ -5,8 +5,8 @@ on:
     types: [published]
 
 env:
-  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.7 pypy3.8
-  PY_MACOS: 3.7 3.8 3.9 3.10 3.11  # macOS doesn't like pypy 3.7-3.8
+  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.7 pypy3.8 pypy3.9
+  PY_MACOS: 3.7 3.8 3.9 3.10 3.11 pypy3.9 # macOS doesn't like pypy 3.7-3.8
 
 jobs:
   linux:

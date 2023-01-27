@@ -7,17 +7,17 @@ on:
   pull_request: {}
 
 env:
-  PY_ALL: 3.7 3.8 3.9 3.10 3.11
+  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.9
 
 jobs:
-  python:
+  pytest:
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.7", "pypy3.8"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.7", "pypy3.8", "pypy3.9"]
 
     steps:
       - uses: actions/checkout@v3
@@ -29,6 +29,18 @@ jobs:
         run: pip install '.[dev]'
       - name: Run tests
         run: pytest --verbose
+
+  python-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install '.[dev]'
       - name: black
         run: black --check tests/ seahash.pyi
 
