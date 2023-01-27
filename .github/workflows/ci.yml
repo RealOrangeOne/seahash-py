@@ -7,7 +7,7 @@ on:
   pull_request: {}
 
 env:
-  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.7 pypy3.8
+  PY_ALL: 3.7 3.8 3.9 3.10 3.11
 
 jobs:
   python:

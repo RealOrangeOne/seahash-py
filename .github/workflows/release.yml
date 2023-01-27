@@ -6,6 +6,7 @@ on:
 
 env:
   PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.7 pypy3.8
+  PY_MACOS: 3.7 3.8 3.9 3.10 3.11  # macOS doesn't like pypy 3.7-3.8
 
 jobs:
   linux:
@@ -73,7 +74,7 @@ jobs:
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release -o dist --interpreter ${{ env.PY_ALL }}
+        args: --release -o dist --interpreter ${{ env.PY_MACOS }}
         target: ${{ matrix.target }}
     - name: Upload wheels
       uses: actions/upload-artifact@v2
