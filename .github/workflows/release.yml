@@ -4,8 +4,15 @@ on:
   release:
     types: [published]
 
+env:
+  PY_ALL: 3.7 3.8 3.9 3.10
+
 jobs:
   linux:
+    strategy:
+      matrix:
+        target: [x86_64, aarch64]
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -13,7 +20,8 @@ jobs:
       with:
         manylinux: auto
         command: build
-        args: --release -o dist
+        args: --release -o dist --interpreter ${{ env.PY_ALL }}
+        target: ${{ matrix.target }}
     - name: Upload wheels
       uses: actions/upload-artifact@v2
       with:
@@ -27,7 +35,7 @@ jobs:
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release --no-sdist -o dist
+        args: --release --no-sdist -o dist --interpreter ${{ env.PY_ALL }}
     - name: Upload wheels
       uses: actions/upload-artifact@v2
       with:
@@ -36,12 +44,16 @@ jobs:
 
   macos:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [x86_64, aarch64]
     steps:
     - uses: actions/checkout@v3
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release --no-sdist -o dist --universal2
+        args: --release --no-sdist -o dist --interpreter ${{ env.PY_ALL }}
+        target: ${{ matrix.target }}
     - name: Upload wheels
       uses: actions/upload-artifact@v2
       with:
