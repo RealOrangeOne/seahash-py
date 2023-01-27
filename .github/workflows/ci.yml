@@ -6,6 +6,9 @@ on:
       - master
   pull_request: {}
 
+env:
+  PY_ALL: 3.7 3.8 3.9 3.10
+
 jobs:
   python:
     runs-on: ${{ matrix.os }}
@@ -28,6 +31,23 @@ jobs:
         run: pytest --verbose
       - name: black
         run: black --check tests/ seahash.pyi
+
+  arm:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pyo3/maturin-action@v1
+        with:
+          command: build
+          args: --release --no-sdist --interpreter ${{ env.PY_ALL }}
+          target: aarch64
+          manylinux: auto
 
   rust:
     runs-on: ubuntu-latest
