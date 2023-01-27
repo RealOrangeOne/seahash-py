@@ -35,7 +35,7 @@ jobs:
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release --no-sdist -o dist --interpreter ${{ env.PY_ALL }}
+        args: --release -o dist --interpreter ${{ env.PY_ALL }}
     - name: Upload wheels
       uses: actions/upload-artifact@v2
       with:
@@ -52,7 +52,7 @@ jobs:
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release --no-sdist -o dist --interpreter ${{ env.PY_ALL }}
+        args: --release -o dist --interpreter ${{ env.PY_ALL }}
         target: ${{ matrix.target }}
     - name: Upload wheels
       uses: actions/upload-artifact@v2

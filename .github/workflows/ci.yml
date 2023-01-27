@@ -45,7 +45,7 @@ jobs:
       - uses: pyo3/maturin-action@v1
         with:
           command: build
-          args: --release --no-sdist --interpreter ${{ env.PY_ALL }}
+          args: --release --interpreter ${{ env.PY_ALL }}
           target: aarch64
           manylinux: auto
 
