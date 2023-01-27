@@ -30,7 +30,7 @@ jobs:
       - uses: messense/maturin-action@v1
         with:
           command: build
-          args: --release --no-sdist -o dist --interpreter=${{ steps.python.outputs.python-path }}
+          args: --release --no-sdist -o dist --interpreter ${{ matrix.python }}
           target: ${{ matrix.target }}
           manylinux: auto
       - name: Install built package
