@@ -28,6 +28,27 @@ jobs:
         name: wheels
         path: dist
 
+  sdist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - uses: messense/maturin-action@v1
+      with:
+        manylinux: off
+        container: off
+        target: x64
+        command: build
+        args: --release --sdist -o dist --interpreter 3.11
+    - name: Upload wheels
+      uses: actions/upload-artifact@v2
+      with:
+        name: wheels
+        path: dist
+
   windows:
     runs-on: windows-latest
     steps:
@@ -64,7 +85,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [ macos, windows, linux ]
+    needs: [ macos, windows, linux, sdist ]
     steps:
       - uses: actions/download-artifact@v2
         with:
