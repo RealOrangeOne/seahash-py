@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           path: $HOME/.cargo
           key: cargo-${{ hashFiles('Cargo.lock') }}
