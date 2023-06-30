@@ -2,36 +2,64 @@ name: CI
 
 on:
   push:
-  pull_request:
+    branches:
+      - master
+  pull_request: {}
+
+env:
+  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.9
 
 jobs:
-  python:
+  pytest:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ["3.7", "3.8", "3.9", "3.10"]
+        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.7", "pypy3.8", "pypy3.9"]
 
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v4
-        id: python
         with:
           python-version: ${{ matrix.python }}
-      - uses: messense/maturin-action@v1
-        with:
-          command: build
-          args: --release --no-sdist -o dist --interpreter=${{ steps.python.outputs.python-path }}
-      - name: Install built package
-        run: pip install seahash --no-index --find-links dist --force-reinstall
-      - name: Install dev dependencies
+      - name: Install
         run: pip install '.[dev]'
       - name: Run tests
         run: pytest --verbose
+
+  python-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: pip install '.[dev]'
       - name: black
         run: black --check tests/ seahash.pyi
+
+  arm:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pyo3/maturin-action@v1
+        with:
+          command: build
+          args: --release --interpreter ${{ env.PY_ALL }}
+          target: aarch64
+          manylinux: auto
 
   rust:
     runs-on: ubuntu-latest

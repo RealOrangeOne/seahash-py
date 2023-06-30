@@ -4,8 +4,16 @@ on:
   release:
     types: [published]
 
+env:
+  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.7 pypy3.8 pypy3.9
+  PY_MACOS: 3.7 3.8 3.9 3.10 3.11 pypy3.9 # macOS doesn't like pypy 3.7-3.8
+
 jobs:
   linux:
+    strategy:
+      matrix:
+        target: [x86_64, aarch64]
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -13,7 +21,29 @@ jobs:
       with:
         manylinux: auto
         command: build
-        args: --release -o dist
+        args: --release -o dist --interpreter ${{ env.PY_ALL }}
+        target: ${{ matrix.target }}
+    - name: Upload wheels
+      uses: actions/upload-artifact@v2
+      with:
+        name: wheels
+        path: dist
+
+  sdist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - uses: messense/maturin-action@v1
+      with:
+        manylinux: off
+        container: off
+        target: x64
+        command: build
+        args: --release --sdist -o dist --interpreter 3.11
     - name: Upload wheels
       uses: actions/upload-artifact@v3
       with:
@@ -27,7 +57,7 @@ jobs:
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release --no-sdist -o dist
+        args: --release -o dist --interpreter ${{ env.PY_ALL }}
     - name: Upload wheels
       uses: actions/upload-artifact@v3
       with:
@@ -36,12 +66,16 @@ jobs:
 
   macos:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        target: [x86_64, aarch64]
     steps:
     - uses: actions/checkout@v3
     - uses: messense/maturin-action@v1
       with:
         command: build
-        args: --release --no-sdist -o dist --universal2
+        args: --release -o dist --interpreter ${{ env.PY_MACOS }}
+        target: ${{ matrix.target }}
     - name: Upload wheels
       uses: actions/upload-artifact@v3
       with:
@@ -52,7 +86,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [ macos, windows, linux ]
+    needs: [ macos, windows, linux, sdist ]
     steps:
       - uses: actions/download-artifact@v3
         with:
