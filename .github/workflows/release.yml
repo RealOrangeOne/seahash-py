@@ -24,7 +24,7 @@ jobs:
         args: --release -o dist --interpreter ${{ env.PY_ALL }}
         target: ${{ matrix.target }}
     - name: Upload wheels
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: wheels
         path: dist
