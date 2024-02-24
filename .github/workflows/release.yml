@@ -5,8 +5,8 @@ on:
     types: [published]
 
 env:
-  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.7 pypy3.8 pypy3.9
-  PY_MACOS: 3.7 3.8 3.9 3.10 3.11 pypy3.9 # macOS doesn't like pypy 3.7-3.8
+  PY_ALL: 3.8 3.9 3.10 3.11 3.12 pypy3.9 pypy3.10
+  PY_MACOS: 3.8 3.9 3.10 3.11 3.12 pypy3.9 pypy3.10 # macOS doesn't like pypy 3.7-3.8
 
 jobs:
   linux:
@@ -36,7 +36,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.12'
     - uses: messense/maturin-action@v1
       with:
         manylinux: off

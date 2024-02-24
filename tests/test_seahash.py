@@ -1,4 +1,5 @@
-import pkg_resources
+from importlib.metadata import version
+
 import sys
 
 import seahash
@@ -13,7 +14,7 @@ def test_hash_seeded():
 
 
 def test_version():
-    assert seahash.__version__ == pkg_resources.get_distribution("seahash").version
+    assert seahash.__version__ == version("seahash")
 
 
 def test_hashlib_compatible():

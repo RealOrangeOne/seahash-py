@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "seahash"
 description = "A blazingly fast, portable hash function with proven statistical guarantees"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {file = "LICENSE"}
 readme = "README.md"
 classifiers = [
@@ -13,11 +13,11 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
     "Typing :: Typed"
@@ -31,6 +31,8 @@ Issues = "https://github.com/RealOrangeOne/seahash-py/issues"
 
 [project.optional-dependencies]
 dev = [
-  "pytest==7.1.2",
-  "black==22.6.0"
+    "pytest",
+    "ruff",
+    "maturin",
+    "setuptools"
 ]
