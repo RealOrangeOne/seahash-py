@@ -33,6 +33,5 @@ Issues = "https://github.com/RealOrangeOne/seahash-py/issues"
 dev = [
     "maturin",
     "pytest",
-    "ruff",
-    "setuptools"
+    "ruff"
 ]
