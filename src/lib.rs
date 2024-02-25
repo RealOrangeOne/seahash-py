@@ -59,13 +59,12 @@ mod inner {
         }
     }
 }
-use inner::{hash, hash_seeded, SeaHash};
 /// A Python module implemented in Rust.
 #[pymodule]
 fn seahash(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
-    m.add_function(wrap_pyfunction!(hash, m)?)?;
-    m.add_function(wrap_pyfunction!(hash_seeded, m)?)?;
-    m.add_class::<SeaHash>()?;
+    m.add_function(wrap_pyfunction!(inner::hash, m)?)?;
+    m.add_function(wrap_pyfunction!(inner::hash_seeded, m)?)?;
+    m.add_class::<inner::SeaHash>()?;
     Ok(())
 }
