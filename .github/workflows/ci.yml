@@ -7,7 +7,7 @@ on:
   pull_request: {}
 
 env:
-  PY_ALL: 3.7 3.8 3.9 3.10 3.11 pypy3.9
+  PY_ALL: 3.8 3.9 3.10 3.11 3.12 pypy3.9 pypy3.10
 
 jobs:
   pytest:
@@ -17,10 +17,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.7", "pypy3.8", "pypy3.9"]
+        python: ["3.8", "3.9", "3.10", "3.11", "3.12", "pypy3.9", "pypy3.10"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
@@ -34,15 +34,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: Install
         run: pip install '.[dev]'
-      - name: black
-        run: black --check tests/ seahash.pyi
+      - name: format
+        run: ruff format --check tests/ seahash.pyi
+      - name: lint
+        run: ruff check tests/ seahash.pyi
 
   arm:
     runs-on: ${{ matrix.os }}
@@ -53,7 +55,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: pyo3/maturin-action@v1
         with:
           command: build
@@ -65,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/cache@v4
         with:
           path: $HOME/.cargo
