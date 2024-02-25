@@ -42,8 +42,10 @@ jobs:
           python-version: "3.12"
       - name: Install
         run: pip install '.[dev]'
-      - name: ruff
+      - name: format
         run: ruff format --check tests/ seahash.pyi
+      - name: lint
+        run: ruff check tests/ seahash.pyi
 
   arm:
     runs-on: ${{ matrix.os }}
