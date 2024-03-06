@@ -1,9 +1,9 @@
 use pyo3::prelude::*;
 
 mod inner {
-    use std::any::Any;
     use std::hash::Hasher;
 
+    #[cfg(Py_3_11)]
     use pyo3::buffer::PyBuffer;
     use pyo3::prelude::*;
     use pyo3::types::PyBytes;
