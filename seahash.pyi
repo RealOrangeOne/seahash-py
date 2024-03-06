@@ -1,6 +1,5 @@
 from collections.abc import Buffer
 
-
 def hash(buf: bytes) -> int: ...
 def hash_seeded(buf: bytes, a: int, b: int, c: int, d: int) -> int: ...
 
