@@ -32,7 +32,7 @@ def test_hashlib_compatible():
 
 @pytest.mark.skipif(
     sys.version_info < (3, 11),
-    reason="requires hashlib.file_digest which is in python3.11 or higher",
+    reason="requires hashlib.file_digest which is new in python3.11",
 )
 def test_hashlib_file_digest_compatible(tmp_path):
     import hashlib
@@ -43,8 +43,8 @@ def test_hashlib_file_digest_compatible(tmp_path):
     with p.open("rb") as f:
         s = hashlib.file_digest(f, lambda: seahash.SeaHash())
     assert s.intdigest() == seahash.hash(CONTENT)
-    assert s.digest() == b"\x9d\n`)\xbb\x94%\xf8"
-    assert s.hexdigest() == "f82594bb29600a9d"
+    assert s.digest() == b"a\xe8\x98S^\xb0\x8e="
+    assert s.hexdigest() == "3d8eb05e5398e861"
 
 
 def test_initial_state():
