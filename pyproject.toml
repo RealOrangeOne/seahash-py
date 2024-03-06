@@ -34,3 +34,6 @@ dev = [
     "pytest==8.0.2",
     "ruff==0.2.2"
 ]
+
+[tool.maturin]
+python-source = "python"

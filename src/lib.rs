@@ -1,5 +1,10 @@
 use pyo3::prelude::*;
+
 mod inner {
+    use std::any::Any;
+    use std::hash::Hasher;
+
+    use pyo3::buffer::PyBuffer;
     use pyo3::prelude::*;
     use pyo3::types::PyBytes;
 
@@ -17,7 +22,7 @@ mod inner {
 
     #[pyclass]
     pub(crate) struct SeaHash {
-        inner: Vec<u8>,
+        inner: seahash::SeaHasher,
     }
 
     #[pymethods]
@@ -31,25 +36,39 @@ mod inner {
         const BLOCK_SIZE: u8 = 8;
 
         #[new]
-        #[pyo3(signature = (string = Vec::new()))]
-        fn new(string: Vec<u8>) -> Self {
-            SeaHash { inner: string }
+        #[pyo3(signature = (data = Vec::new()))]
+        fn new(data: Vec<u8>) -> Self {
+            let mut inner = seahash::SeaHasher::new();
+            inner.write(data.as_slice());
+            SeaHash { inner }
         }
 
+        #[cfg(not(Py_3_11))]
         pub fn update(&mut self, obj: &[u8]) {
-            self.inner.extend_from_slice(obj)
+            self.inner.write(obj)
+        }
+
+        #[cfg(Py_3_11)]
+        pub fn update(&mut self, py: Python, obj: &PyAny) -> PyResult<()> {
+            let buf: &[u8] = match obj.extract() {
+                Ok(b) => b,
+                Err(_) => {
+                    PyBuffer::get(obj)?.to_vec(py)?.as_slice()
+                }
+            };
+            Ok(self.inner.write(buf))
         }
 
         pub fn digest(&self, py: Python) -> PyObject {
-            PyBytes::new(py, &self.intdigest(py).to_ne_bytes()).into()
+            PyBytes::new(py, &self.intdigest().to_ne_bytes()).into()
         }
 
-        pub fn intdigest(&self, py: Python) -> u64 {
-            hash(py, &self.inner)
+        pub fn intdigest(&self) -> u64 {
+            self.inner.finish()
         }
 
-        pub fn hexdigest(&self, py: Python) -> String {
-            format!("{:x}", self.intdigest(py))
+        pub fn hexdigest(&self) -> String {
+            format!("{:x}", self.intdigest())
         }
 
         pub fn copy(&self) -> Self {
