@@ -53,13 +53,12 @@ mod inner {
             match obj.extract() {
                 Ok(buf) => {
                     self.inner.write(buf);
-                },
+                }
                 Err(_) => {
                     self.inner.write(PyBuffer::get(obj)?.to_vec(py)?.as_slice());
                 }
             }
             Ok(())
-            
         }
 
         pub fn digest(&self, py: Python) -> PyObject {
