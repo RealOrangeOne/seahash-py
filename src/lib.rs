@@ -50,13 +50,16 @@ mod inner {
 
         #[cfg(Py_3_11)]
         pub fn update(&mut self, py: Python, obj: &PyAny) -> PyResult<()> {
-            let buf: &[u8] = match obj.extract() {
-                Ok(b) => b,
+            match obj.extract() {
+                Ok(buf) => {
+                    self.inner.write(buf);
+                },
                 Err(_) => {
-                    PyBuffer::get(obj)?.to_vec(py)?.as_slice()
+                    self.inner.write(PyBuffer::get(obj)?.to_vec(py)?.as_slice());
                 }
-            };
-            Ok(self.inner.write(buf))
+            }
+            Ok(())
+            
         }
 
         pub fn digest(&self, py: Python) -> PyObject {
