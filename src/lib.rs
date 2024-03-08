@@ -20,6 +20,7 @@ mod inner {
         py.allow_threads(|| seahash::hash_seeded(buf, a, b, c, d))
     }
 
+    #[derive(Copy, Clone)]
     #[pyclass]
     pub(crate) struct SeaHash {
         inner: seahash::SeaHasher,
@@ -45,18 +46,16 @@ mod inner {
 
         #[cfg(not(Py_3_11))]
         pub fn update(&mut self, obj: &[u8]) {
-            self.inner.write(obj)
+            py.allow_threads(|| self.inner.write(obj))
         }
 
         #[cfg(Py_3_11)]
         pub fn update(&mut self, py: Python, obj: &PyAny) -> PyResult<()> {
-            match obj.extract() {
-                Ok(buf) => {
-                    self.inner.write(buf);
-                }
-                Err(_) => {
-                    self.inner.write(PyBuffer::get(obj)?.to_vec(py)?.as_slice());
-                }
+            if let Ok(buf) = obj.extract() {
+                py.allow_threads(|| self.inner.write(buf));
+            } else {
+                let vec = PyBuffer::get(obj)?.to_vec(py)?;
+                py.allow_threads(|| self.inner.write(vec.as_slice()));
             }
             Ok(())
         }
@@ -74,9 +73,8 @@ mod inner {
         }
 
         pub fn copy(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
+            // Self derives Copy
+            *self
         }
     }
 }
