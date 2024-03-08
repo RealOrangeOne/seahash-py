@@ -45,7 +45,7 @@ mod inner {
         }
 
         #[cfg(not(Py_3_11))]
-        pub fn update(&mut self, obj: &[u8]) {
+        pub fn update(&mut self, py: Python, obj: &[u8]) {
             py.allow_threads(|| self.inner.write(obj))
         }
 
