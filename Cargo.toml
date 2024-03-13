@@ -12,3 +12,7 @@ crate-type = ["cdylib"]
 [dependencies]
 pyo3 = { version = "0.20.3", features = ["extension-module"] }
 seahash = "4.1.0"
+
+[build-dependencies]
+pyo3-build-config = { version = "0.20.3", features = ["resolve-config"] }
+
