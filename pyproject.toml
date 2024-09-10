@@ -31,6 +31,6 @@ Issues = "https://github.com/RealOrangeOne/seahash-py/issues"
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.0.2",
+    "pytest==8.3.3",
     "ruff==0.3.0"
 ]
