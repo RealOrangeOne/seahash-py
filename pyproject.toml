@@ -4,6 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "seahash"
+version = "0.3.0"
 description = "A blazingly fast, portable hash function with proven statistical guarantees"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
